@@ -1,0 +1,92 @@
+<?php
+include('includes/connect_db.php'); // connexion à la base de donnée
+
+if(isset($_POST['login']) && isset($_POST['password'])) {
+    $login = mysqli_real_escape_string($connect, htmlspecialchars($_POST['login']));
+    $password = mysqli_real_escape_string($connect, htmlspecialchars($_POST['password']));
+    $password2 = mysqli_real_escape_string($connect, htmlspecialchars($_POST['password2']));
+
+
+    if($login !== "" && $password !== "" && $password2 !== ""){
+        if($password == $password2){
+            $requete = "SELECT count(*) FROM utilisateurs where login = '" . $login . "'";
+            $exec_requete = $connect -> query($requete);
+            $reponse = mysqli_fetch_array($exec_requete);
+            $count = $reponse['count(*)'];
+            
+
+            if($count==0){
+                $requete = "INSERT INTO utilisateurs (login, password) VALUES ('$login' , '$password')";
+                $exec_requete = $connect -> query($requete);
+                header('Location: connexion.php');
+                var_dump($exec_requete);
+            }
+            else{//utilisateur déjà existant
+                header('Location: inscription.php?erreur=1');
+            }        
+        }
+        else{ //mot de passes différent
+            header('Location: inscription.php?erreur=2');
+        }
+    }
+}
+
+mysqli_close($connect); //fermer la connexion
+?>
+
+<!-- partie HTML -->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Inscription</title>
+<link rel="stylesheet" href="styles/inscription-style.css" />
+<link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta charset="UTF-8">
+<meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1">
+</head>
+<body>
+
+<!-- header des pages -->
+<?php include('includes/header.php'); ?>
+<main>
+    <section>
+        <!-- partie PHP qui affiche les erreurs -->
+        <?php
+            if(isset($_GET['erreur'])) {
+                $err = $_GET['erreur'];
+                if($err == 1){
+                    echo "<center><p style='color:red'>Ce nom d'utilisateur a déjà été utilisé</p></center>";
+                }
+                if($err == 2){
+                    echo "<center><p style='color:red'>Les mot de passes ne correspondent pas</p></center>";
+                }
+                
+            } 
+        ?>
+        <form action="inscription.php" method="POST">
+            <div class="container">
+                <div class="bold register">Inscrivez-vous</div>
+                <p>Remplissez toutes les cases</p>
+                <hr>
+                <label for="login" class="bold">Nom d'utilisateur</label>
+                <input type="text" placeholder="Saissisez un nom d'utilisateur" name="login" id="login" required>
+
+                <label for="password" class="bold">Mot de passe</label>
+                <input type="password" placeholder="Mot de passe" name="password" id="password" required>
+
+                <label for="password2" class="bold">Répétez le mot de passe</label>
+                <input type="password" placeholder="Confirmez le mot de passe" name="password2" id="password2" required>
+                <hr>
+                <p id="policy">En vous inscrivant, vous acceptez nos <a href="#">Conditions Générales d’Utilisation</a>.</p>
+
+                <button type="submit" class="registerbtn">S'inscrire</button>
+            </div>
+            <div class="container signin">
+                <p>Avez-vous déjà un compte? <a href="connexion.php">Connexion</a></p>
+            </div>
+        </form>
+    </section>
+</main>
+
+<?php //include('includes/footer.php')?>
