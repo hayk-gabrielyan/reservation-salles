@@ -1,8 +1,8 @@
 <?php
     session_start();
-    include 'includes/header.php';
+    include 'includes/header.php'; //insertion de header
+    include('includes/connect_db.php'); // connexion à la base de donnée
     $login = $_SESSION['login'];
-    var_dump($_SESSION['login']);
 
 ?>
 
@@ -19,7 +19,14 @@
 </head>
 <body>
     <main>
-        <div>Vous etes connecté en tant que <?php echo $login ?></div>
         <h1>Formulaire de réservation</h1>
+        <label for="titre">Titre de réservation</label>
+        <input name="titre" type="text" placeholder="saisissez ici un titre pour votre réservation">
+        <label for="debut">Choisissez l'heure de début</label>
+        <select name="debut">
+            <option >Select</option>
+            <option value="canada">Canada</option>
+            <option value="usa">USA</option>
+        </select>
     </main>
 </body>

@@ -1,9 +1,9 @@
 <?php
     session_start();
     include 'includes/header.php';
-    $login = $_SESSION['login'];
-    var_dump($_SESSION['login']);
+    include('includes/connect_db.php'); // connexion à la base de donnée
 
+    $login = $_SESSION['login'];
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,6 @@
 </head>
 <body>
     <main>
-        <div>Vous etes connecté en tant que <?php echo $login ?></div>
         <h1>Planning</h1>
     </main>
 </body>

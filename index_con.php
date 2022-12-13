@@ -1,6 +1,6 @@
 <?php 
-session_start();
-$login = $_SESSION['login'];
+    session_start();
+    $login = $_SESSION['login'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +14,6 @@ $login = $_SESSION['login'];
 <body>
     <main>
         <?php include ('includes/header.php')?>
-        <div>Vous etes connecté en tant que <?php echo $login ?></div>
     </main>
 </body>
 </html>

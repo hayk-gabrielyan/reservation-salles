@@ -1,7 +1,6 @@
 <?php
-    include 'includes/header.php';
-
-
+    include 'includes/header.php'; //insertion de header
+    include('includes/connect_db.php'); // connexion à la base de donnée
 ?>
 
 <!DOCTYPE html>
