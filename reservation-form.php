@@ -1,9 +1,37 @@
 <?php
     session_start();
     include 'includes/header.php'; //insertion de header
-    include('includes/connect_db.php'); // connexion à la base de donnée
+    include 'includes/connect_db.php'; // connexion à la base de donnée
     $login = $_SESSION['login'];
 
+
+    if (isset($_POST['submit'])) {
+        if (isset($_POST['titre']) && ($_POST['debut'] !== 'choix') && ($_POST['fin'] !== 'choix') ){
+            
+            $titre = $_POST['titre'];
+            $debut = $_POST['debut'];
+            $fin = $_POST['fin'];
+            $date = $_POST['date'];
+            $description = $_POST['description'];
+            
+            $requete = ("SELECT id FROM utilisateurs WHERE `login` = '$login' ");
+           
+            $reponse = $connect -> query($requete);
+            
+            
+            $reponse_fetch_array = $reponse -> fetch_array();
+            $user_id = $reponse_fetch_array['id'];
+
+            
+            $requete = ("INSERT INTO reservations (`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$titre', '$description', '$date $debut', '$date $fin', '$user_id') ");
+            $exec_requete = $connect -> query($requete);
+
+            
+            //header('Location: reservation-form.php?erreur=2');
+        } else {
+            header('Location: reservation-form.php?erreur=1');
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -20,13 +48,55 @@
 <body>
     <main>
         <h1>Formulaire de réservation</h1>
-        <label for="titre">Titre de réservation</label>
-        <input name="titre" type="text" placeholder="saisissez ici un titre pour votre réservation">
-        <label for="debut">Choisissez l'heure de début</label>
-        <select name="debut">
-            <option >Select</option>
-            <option value="canada">Canada</option>
-            <option value="usa">USA</option>
-        </select>
+        <?php 
+            if(isset($_GET['erreur'])) {
+                    $err = $_GET['erreur'];
+                    if($err == 1){
+                        echo "<center><p style='color:red'>Choisissez l'heure svp</p></center>";
+                    }
+                    if($err == 2){
+                        echo "<center><p style='color:green'>Les modifications ont été bien enregistrées</p></center>";
+                    }                      
+                } 
+        ?>
+        <form action="reservation-form.php" method="POST">
+            <label for="titre">Titre de réservation</label>
+            <input name="titre" type="text" placeholder="saisissez ici un titre pour votre réservation" required>
+            <label for="debut">Heure de début</label>
+            <select name="debut" required>
+                <option >choix</option>
+                <option value="08:00">08h00</option>
+                <option value="09:00">09h00</option>
+                <option value="10:00">10h00</option>
+                <option value="10:00">11h00</option>
+                <option value="10:00">12h00</option>
+                <option value="10:00">13h00</option>
+                <option value="10:00">14h00</option>
+                <option value="10:00">15h00</option>
+                <option value="10:00">16h00</option>
+                <option value="10:00">17h00</option>
+                <option value="10:00">18h00</option>
+            </select>
+            <label for="fin">Heure de fin</label>
+            <select name="fin" required>
+                <option>choix</option>
+                <option value="09:00">09h00</option>
+                <option value="10:00">10h00</option>
+                <option value="10:00">11h00</option>
+                <option value="10:00">12h00</option>
+                <option value="10:00">13h00</option>
+                <option value="10:00">14h00</option>
+                <option value="10:00">15h00</option>
+                <option value="10:00">16h00</option>
+                <option value="10:00">17h00</option>
+                <option value="10:00">18h00</option>
+                <option value="10:00">19h00</option>
+            </select>
+            <label for="date" >Date</label>
+            <input name="date" type="date" min="2022-12-13" max="2023-12-31" required>
+            <label for="description" >Description :</label>
+            <input name="description" type="text" required>
+            <button name="submit" type="submit">Réserver</button>
+        </form>
     </main>
 </body>
