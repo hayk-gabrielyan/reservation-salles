@@ -68,29 +68,29 @@
                 <option value="08:00">08h00</option>
                 <option value="09:00">09h00</option>
                 <option value="10:00">10h00</option>
-                <option value="10:00">11h00</option>
-                <option value="10:00">12h00</option>
-                <option value="10:00">13h00</option>
-                <option value="10:00">14h00</option>
-                <option value="10:00">15h00</option>
-                <option value="10:00">16h00</option>
-                <option value="10:00">17h00</option>
-                <option value="10:00">18h00</option>
+                <option value="11:00">11h00</option>
+                <option value="12:00">12h00</option>
+                <option value="13:00">13h00</option>
+                <option value="14:00">14h00</option>
+                <option value="15:00">15h00</option>
+                <option value="16:00">16h00</option>
+                <option value="17:00">17h00</option>
+                <option value="18:00">18h00</option>
             </select>
             <label for="fin">Heure de fin</label>
             <select name="fin" required>
                 <option>choix</option>
                 <option value="09:00">09h00</option>
                 <option value="10:00">10h00</option>
-                <option value="10:00">11h00</option>
-                <option value="10:00">12h00</option>
-                <option value="10:00">13h00</option>
-                <option value="10:00">14h00</option>
-                <option value="10:00">15h00</option>
-                <option value="10:00">16h00</option>
-                <option value="10:00">17h00</option>
-                <option value="10:00">18h00</option>
-                <option value="10:00">19h00</option>
+                <option value="11:00">11h00</option>
+                <option value="12:00">12h00</option>
+                <option value="13:00">13h00</option>
+                <option value="14:00">14h00</option>
+                <option value="15:00">15h00</option>
+                <option value="16:00">16h00</option>
+                <option value="17:00">17h00</option>
+                <option value="18:00">18h00</option>
+                <option value="19:00">19h00</option>
             </select>
             <label for="date" >Date</label>
             <input name="date" type="date" min="2022-12-13" max="2023-12-31" required>
