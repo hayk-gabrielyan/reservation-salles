@@ -8,13 +8,13 @@
 
     if (isset($_POST['submit'])) {
         if (isset($_POST['titre']) && ($_POST['debut'] !== 'choix') && ($_POST['fin'] !== 'choix') ){
-            
+            //déclaration de variables de POST
             $titre = $_POST['titre'];
             $debut = $_POST['debut'];
             $fin = $_POST['fin'];
             $date = $_POST['date'];
             $description = $_POST['description'];
-            
+
             //récuperation de id_utilisateur de la db
             $requete = ("SELECT id FROM utilisateurs WHERE `login` = '$login' ");
             $exec_requete = $connect -> query($requete);
@@ -27,7 +27,8 @@
             $reponse_fetch_array2 = $exec_requete2 -> fetch_all();
             $debut_bd = $reponse_fetch_array2;
             //var_dump($debut_bd);
-            //$count = count($debut_bd);
+            // $count = count($debut_bd);
+            // var_dump($count);
             
             //echo$count.' '. " - c'est le nombre de lignes dans db ".'<br>';
             //echo $debut_bd[0][0].' '. 'date récupéré de db '.'<br>';
@@ -36,24 +37,66 @@
             $dateheure = ($date .' '. $debut );
             //var_dump($dateheure);
             //echo $dateheure. ' '. 'date de POST' .'<br>'.'<br>'.'<br>';
-            $i = 0;
             
-            //requete de echerche de nombre de repetition de la valeur d'input dans la db 
+            //requete de recherche de nombre de repetition de la valeur d'input dans la db 
             $requete3 = "SELECT count(debut) FROM reservations WHERE debut ='". $dateheure. "'";
             $exec_requete3 = $connect -> query($requete3);
             $reponse_fetch_array3 = mysqli_fetch_array($exec_requete3);
             $count1 = $reponse_fetch_array3['count(debut)'];
-            var_dump($count1);
+            //var_dump($count1);
+            echo 'date de post';
+            var_dump($date);
+            
 
-            //définition de la condition d'insertion des données dans la db
-            if($count1==0){
-                echo 'réservation à bien été effectué';
-                $requete4 = ("INSERT INTO reservations (`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$titre', '$description', '$date $debut', '$date $fin', '$user_id') ");
-                $exec_requete4 = $connect -> query($requete4);
-                //header('Location: reservation-form.php?erreur=2');
+            // $is_saturday = date('l', $date) == 'Saturday';
+            // $is_sunday = date('l', $date) == 'Sunday';
+            // var_dump($is_saturday);
+
+            $date_min = date("Y-m-d", strtotime("now"));
+            echo 'date actuelle minimum possible';
+            var_dump($date_min);
+            
+            $dt = new DateTime('now',new DateTimeZone('Europe/Paris'));
+            echo '<br>'.  "voici l'heure actuelle : ". date( "H" ) . '<br>';
+            echo "voici l'heure de debut de post : ". date( "s", $debut) . '<br>';
+            echo "voici l'heure de fin de post : ". date( "s", $fin ) . '<br>'. '<br>';
+            
+            //les conditions d'insertion dans la db
+            if($count1==0 ) {
+
+                //Vérification si l'utilisateur tente de réserver un samedi ou dimanche
+                $date_debut = new DateTime($_POST['date']);
+                echo "voici la date de post : " .$date . '<br>';
+                if($date_debut->format('D') == 'Sat' || $date_debut->format('D') == 'Sun' ) {
+                    var_dump($date_debut->format('D'));
+                    echo "Nous sommes fermés les week-ends";
+                } else {
+                    if($debut < $fin && $debut != $fin){
+                        //condition pour verifier que la date de réservation n'est pas antérieure à la date actuelle
+                        if ($date /*post*/ >= $date_min /*aujourd'hui*/) {
+                            //condition de vérification si l'heure de reservation n'est pas déjà dépassée
+                            if (date("s", $debut/*heure debut de post*/) > date("H")/*heure actuelle*/) {
+                                echo 'réservation à bien été effectué';
+                                // $requete4 = ("INSERT INTO reservations (`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$titre', '$description', '$date $debut', '$date $fin', '$user_id') ");
+                                // $exec_requete4 = $connect -> query($requete4);
+                                //header('Location: reservation-form.php?erreur=2');
+                            } else {
+                                echo "Erreur : l'heure de debut selectionné est antérieure à l'heure actuelle";
+                            }
+                        } else {
+                            echo "Erreur : la date choisie est une date antérieure à la date actuelle";
+                        }
+                        
+                    }
+                    else{
+                        echo "Erreur : heure de fin est antérieur ou égal à l'heure de debut";
+                    }
+                } 
+                    
             } else {
                 echo 'créneau déjà pris';
-            }            
+            }
+                      
             
         } else {
             header('Location: reservation-form.php?erreur=1');
@@ -88,14 +131,14 @@
         ?>
         <form action="reservation-form.php" method="POST">
             <label for="titre">Titre de réservation</label>
-            <input name="titre" type="text" placeholder="saisissez ici un titre pour votre réservation" required>
+            <input name="titre" type="text" placeholder="titre de l'evenement" required>
             <label for="debut">Heure de début</label>
             <select name="debut" required>
                 <option >choix</option>
                 <option value="08">08h00</option>
                 <option value="09">09h00</option>
-                <option value="11">11h00</option>
                 <option value="10">10h00</option>
+                <option value="11">11h00</option>
                 <option value="12">12h00</option>
                 <option value="13">13h00</option>
                 <option value="14">14h00</option>
@@ -119,8 +162,8 @@
                 <option value="18">18h00</option>
                 <option value="19">19h00</option>
             </select>
-            <label for="date" >Date</label>
-            <input name="date" type="date" min="2022-12-13" max="2023-12-31" required>
+            <label for="date">Date</label>
+            <input name="date" type="date"  min=<?php $date_min ?> max="2023-12-31" required>
             <label for="description" >Description :</label>
             <input name="description" type="text" required>
             <button name="submit" type="submit">Réserver</button>
