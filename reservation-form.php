@@ -1,6 +1,6 @@
-<?php
+    <?php
     session_start();
-    include 'includes/header.php'; //insertion de header
+    
     include 'includes/connect_db.php'; // connexion à la base de donnée
     $login = $_SESSION['login'];
 
@@ -25,13 +25,13 @@
             $requete2 = "SELECT debut FROM reservations";
             $exec_requete2 = $connect -> query($requete2);
             $reponse_fetch_array2 = $exec_requete2 -> fetch_all();
-            $debut_bd = $reponse_fetch_array2;
-            //var_dump($debut_bd);
-            // $count = count($debut_bd);
+            
+            //var_dump($reponse_fetch_array2);
+            // $count = count($reponse_fetch_array2);
             // var_dump($count);
             
             //echo$count.' '. " - c'est le nombre de lignes dans db ".'<br>';
-            //echo $debut_bd[0][0].' '. 'date récupéré de db '.'<br>';
+            //echo $reponse_fetch_array2[0][0].' '. 'date récupéré de db '.'<br>';
             
             //définition du format de la date et heure pour comparer dans la requete suivante
             $dateheure = ($date .' '. $debut );
@@ -44,38 +44,38 @@
             $reponse_fetch_array3 = mysqli_fetch_array($exec_requete3);
             $count1 = $reponse_fetch_array3['count(debut)'];
             //var_dump($count1);
-            echo 'date de post';
-            var_dump($date);
-            
 
             // $is_saturday = date('l', $date) == 'Saturday';
             // $is_sunday = date('l', $date) == 'Sunday';
             // var_dump($is_saturday);
 
-            $date_min = date("Y-m-d", strtotime("now"));
-            echo 'date actuelle minimum possible';
-            var_dump($date_min);
-            
+            //définition de la date minimum autorisée à réserver
+            $date_min = date("Y-m-d", strtotime("today"));
+            echo "date actuelle minimum possible : $date_min " . '<br>';
+            echo "date de POST : $date" . '<br>';
+
+            // définition de date et heure actuelle avec timezone EUROPE / PARIS
             $dt = new DateTime('now',new DateTimeZone('Europe/Paris'));
+            var_dump($dt) ;
             echo '<br>'.  "voici l'heure actuelle : ". date( "H" ) . '<br>';
-            echo "voici l'heure de debut de post : ". date( "s", $debut) . '<br>';
-            echo "voici l'heure de fin de post : ". date( "s", $fin ) . '<br>'. '<br>';
+            echo "voici l'heure de debut de POST : ". date( "s", $debut) . '<br>';
+            echo "voici l'heure de fin de POST : ". date( "s", $fin ) . '<br>'. '<br>';
             
             //les conditions d'insertion dans la db
             if($count1==0 ) {
 
                 //Vérification si l'utilisateur tente de réserver un samedi ou dimanche
                 $date_debut = new DateTime($_POST['date']);
-                echo "voici la date de post : " .$date . '<br>';
+                
                 if($date_debut->format('D') == 'Sat' || $date_debut->format('D') == 'Sun' ) {
                     var_dump($date_debut->format('D'));
                     echo "Nous sommes fermés les week-ends";
                 } else {
                     if($debut < $fin && $debut != $fin){
                         //condition pour verifier que la date de réservation n'est pas antérieure à la date actuelle
-                        if ($date /*post*/ >= $date_min /*aujourd'hui*/) {
+                        if ($date /*POST*/ >= $date_min /*aujourd'hui*/) {
                             //condition de vérification si l'heure de reservation n'est pas déjà dépassée
-                            if (date("s", $debut/*heure debut de post*/) > date("H")/*heure actuelle*/) {
+                            if (date("s", $debut/*heure debut de POST*/) > date("H")/*heure actuelle*/) {
                                 echo 'réservation à bien été effectué';
                                 // $requete4 = ("INSERT INTO reservations (`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$titre', '$description', '$date $debut', '$date $fin', '$user_id') ");
                                 // $exec_requete4 = $connect -> query($requete4);
@@ -103,19 +103,16 @@
         }
     }
 ?>
+<!------------------------------------------------------------------------------------------------------------------------------->
+<!--------------------------------------------------------- PARTIE HTML --------------------------------------------------------->
+<!------------------------------------------------------------------------------------------------------------------------------->
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
-    <link rel="stylesheet" href="styles/reservation-form.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Document</title>
-</head>
+<?php include 'includes/header.php'; //insertion de header ?>
+
 <body>
+<?php include ('includes/nav.php')?>
     <main>
         <h1>Formulaire de réservation</h1>
         <?php 
