@@ -14,7 +14,7 @@
             $fin = $_POST['fin'];
             $date = $_POST['date'];
             $description = $_POST['description'];
-
+            $dt = new DateTime('now',new DateTimeZone('Europe/Paris'));
             //récuperation de id_utilisateur de la db
             $requete = ("SELECT id FROM utilisateurs WHERE `login` = '$login' ");
             $exec_requete = $connect -> query($requete);
@@ -22,11 +22,24 @@
             $user_id = $reponse_fetch_array['id'];
             
             //récuperation de la date et heure de debut de la db
-            $requete2 = "SELECT debut FROM reservations";
-            $exec_requete2 = $connect -> query($requete2);
-            $reponse_fetch_array2 = $exec_requete2 -> fetch_all();
+            $requete2 = "SELECT `debut`, `fin` FROM `reservations`";
+            $exec_requete2 = $connect->query($requete2);
+            $reponse_fetch_array2 = $exec_requete2->fetch_all();
             
-            //var_dump($reponse_fetch_array2);
+            $i = 0;
+            foreach ($reponse_fetch_array2 as $key => $value) {
+                echo $reponse_fetch_array2[0][$i] .' - '. ' début de reservation No : '.$i.'' .'<br>';
+                echo $reponse_fetch_array2[$i][0] .' - '. ' fin de reservation No : '.$i.'' .'<br>';
+            $i++;
+
+            }
+            
+            //var_dump($reponse_fetch_array2) ;
+            echo  '<br>' . $reponse_fetch_array2[0][0] .' - '. ' début de 1ére reservation' . '<br>';
+            echo $reponse_fetch_array2[0][1] .' - '. ' fin de 2éme reservation'. '<br>';
+            echo $reponse_fetch_array2[1][0] .' - '. ' début de 1ére reservation'. '<br>';
+            echo $reponse_fetch_array2[0][1] .' - '. ' fin de 2éme reservation'. '<br>'. '<br>';
+            
             // $count = count($reponse_fetch_array2);
             // var_dump($count);
             
@@ -55,36 +68,34 @@
             echo "date de POST : $date" . '<br>';
 
             // définition de date et heure actuelle avec timezone EUROPE / PARIS
-            $dt = new DateTime('now',new DateTimeZone('Europe/Paris'));
-            var_dump($dt) ;
-            echo '<br>'.  "voici l'heure actuelle : ". date( "H" ) . '<br>';
-            echo "voici l'heure de debut de POST : ". date( "s", $debut) . '<br>';
+            
+            //var_dump($dt) ;
+            echo '<br>'.  "voici date et heure actuelle : " . $dt->format('d/m/Y H:i:s'). '<br>';
+            
+            echo "voici date et heure de debut de POST : ". date( "d/m/Y", strtotime($date)).' '. date( "s:H:i", $debut) . '<br>'. '<br>';
             echo "voici l'heure de fin de POST : ". date( "s", $fin ) . '<br>'. '<br>';
+            $date_heure_debut = date( "d/m/Y", strtotime($date)).' '. date( "s:H:i", $debut);
+            $date_heure_actuelle = $dt->format('d/m/Y H:i:s');
             
             //les conditions d'insertion dans la db
             if($count1==0 ) {
 
                 //Vérification si l'utilisateur tente de réserver un samedi ou dimanche
                 $date_debut = new DateTime($_POST['date']);
-                
-                if($date_debut->format('D') == 'Sat' || $date_debut->format('D') == 'Sun' ) {
+                $date_fin = new DateTime($_POST['date']);
+                if($date_debut->format('D') == 'Sat' || $date_debut->format('D') == 'Sun'  || $date_fin->format('D') == 'Sat' || $date_fin->format('D') == 'Sun' ) {
                     var_dump($date_debut->format('D'));
                     echo "Nous sommes fermés les week-ends";
                 } else {
                     if($debut < $fin && $debut != $fin){
                         //condition pour verifier que la date de réservation n'est pas antérieure à la date actuelle
-                        if ($date /*POST*/ >= $date_min /*aujourd'hui*/) {
-                            //condition de vérification si l'heure de reservation n'est pas déjà dépassée
-                            if (date("s", $debut/*heure debut de POST*/) > date("H")/*heure actuelle*/) {
+                        if ($date_heure_debut /*POST*/ >= $date_heure_actuelle /*actuelle*/) {
                                 echo 'réservation à bien été effectué';
-                                // $requete4 = ("INSERT INTO reservations (`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$titre', '$description', '$date $debut', '$date $fin', '$user_id') ");
-                                // $exec_requete4 = $connect -> query($requete4);
+                                $requete4 = ("INSERT INTO reservations (`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$titre', '$description', '$date $debut', '$date $fin', '$user_id') ");
+                                $exec_requete4 = $connect -> query($requete4);
                                 //header('Location: reservation-form.php?erreur=2');
-                            } else {
-                                echo "Erreur : l'heure de debut selectionné est antérieure à l'heure actuelle";
-                            }
                         } else {
-                            echo "Erreur : la date choisie est une date antérieure à la date actuelle";
+                            echo "Erreur : la date et(ou) heure choisie est une date antérieure à la date actuelle". '<br>'. '<br>';
                         }
                         
                     }
