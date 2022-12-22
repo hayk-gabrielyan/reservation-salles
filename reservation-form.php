@@ -104,7 +104,7 @@
                 $date_fin = new DateTime($_POST['date']);
                 if($date_debut->format('D') == 'Sat' || $date_debut->format('D') == 'Sun'  || $date_fin->format('D') == 'Sat' || $date_fin->format('D') == 'Sun' ) {
                     var_dump($date_debut->format('D'));
-                    echo "Nous sommes fermés les week-ends";
+                    header('Location: reservation-form.php?message=7');
                 } else {
                     if($debut < $fin && $debut != $fin){
                         //condition pour verifier que la date de réservation n'est pas antérieure à la date actuelle
@@ -112,33 +112,32 @@
 
                             if ($isInvalidReservationTime) {
                                 //Show error message
-                                echo "Créneau non disponible, consultez le planning pour voir les disponibilités";
-                                //header('Location: reservation-form.php?erreur=1');
+                                header('Location: reservation-form.php?message=6');
                             } else {
                                 //Save to DB
-                                echo 'réservation à bien été effectué';
+                               
                                 $requete4 = ("INSERT INTO reservations (`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$titre', '$description', '$date $debut', '$date $fin', '$user_id') ");
                                 $exec_requete4 = $connect -> query($requete4);
-                                //header('Location: reservation-form.php?erreur=2');
+                                header('Location: reservation-form.php?message=5');
                             }
 
                         } else {
-                            echo "Erreur : la date et(ou) heure choisie est une date antérieure à la date actuelle". '<br>'. '<br>';
+                            header('Location: reservation-form.php?message=4');
                         }
                         
                     }
                     else{
-                        echo "Erreur : heure de fin est antérieur ou égal à l'heure de debut";
+                        header('Location: reservation-form.php?message=3');
                     }
                 } 
                     
             } else {
-                echo 'créneau déjà pris';
+                header('Location: reservation-form.php?message=2');
             }
                       
             
         } else {
-            header('Location: reservation-form.php?erreur=1');
+            header('Location: reservation-form.php?message=1');
         }
     }
 ?>
@@ -154,14 +153,31 @@
 <?php include ('includes/nav.php')?>
     <main>
         <h1>Formulaire de réservation</h1>
-        <?php 
-            if(isset($_GET['erreur'])) {
-                    $err = $_GET['erreur'];
-                    if($err == 1){
-                        echo "<center><p style='color:red'>Choisissez l'heure svp</p></center>";
+        
+        <?php
+        //affichage des messages 
+            if(isset($_GET['message'])) {
+                    $message = $_GET['message'];
+                    if($message == 1){
+                        echo "<center><p style='color:red'>Erreur : Choisissez l'heure svp</p></center>";
                     }
-                    if($err == 2){
-                        echo "<center><p style='color:red'>Réservation à bien été effectué</p></center>";
+                    if($message == 2){
+                        echo "<center><p style='color:red'>Erreur : Créneau déjà pris</p></center>";
+                    }                      
+                    if($message == 3){
+                        echo "<center><p style='color:red'>Erreur : heure de fin est antérieur ou égal à l'heure de debut</p></center>";
+                    }                      
+                    if($message == 4){
+                        echo "<center><p style='color:red'>Erreur : la date et(ou) heure choisie est antérieure à la date date et(ou) heure actuelle </center>";
+                    }                      
+                    if($message == 5){
+                        echo "<center><p style='color:green'>Merci, votre réservation à bien été effectué.</center>";
+                    }                      
+                    if($message == 6){
+                        echo "<center><p style='color:red'>Créneau non disponible, consultez le planning pour voir les disponibilités</center>";
+                    }                      
+                    if($message == 7){
+                        echo "<center><p style='color:red'>Nous sommes fermés les week-ends</center>";
                     }                      
                 } 
         ?>
