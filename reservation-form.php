@@ -1,9 +1,31 @@
     <?php
     session_start();
+
+    function isOverlapping($reservation, $toCheckDebut, $toCheckFin)
+    {
+        $reservationDebutDate = new DateTime($reservation['debut']);
+        $reservationFinDate = new DateTime($reservation['fin']);
+        $toCheckDebutDate = new DateTime($toCheckDebut);
+        $toCheckFinDate = new DateTime($toCheckFin);
+
+        if ($reservationDebutDate > $toCheckDebutDate && $reservationDebutDate < $toCheckFinDate) {
+            return true;
+        }
+
+        if ($reservationFinDate > $toCheckDebutDate && $reservationFinDate < $toCheckFinDate) {
+            return true;
+        }
+
+        if ($reservationDebutDate < $toCheckDebutDate && $reservationFinDate > $toCheckFinDate) {
+            return true;
+        }
+
+        return false;
+    }
     
     include 'includes/connect_db.php'; // connexion à la base de donnée
     $login = $_SESSION['login'];
-
+    $isInvalidReservationTime = false;
 
 
     if (isset($_POST['submit'])) {
@@ -24,30 +46,27 @@
             //récuperation de la date et heure de debut de la db
             $requete2 = "SELECT `debut`, `fin` FROM `reservations`";
             $exec_requete2 = $connect->query($requete2);
-            $reponse_fetch_array2 = $exec_requete2->fetch_all();
+            $reponse_fetch_array2 = $exec_requete2->fetch_all(MYSQLI_ASSOC);
             
-            $i = 0;
-            foreach ($reponse_fetch_array2 as $key => $value) {
-                echo $reponse_fetch_array2[0][$i] .' - '. ' début de reservation No : '.$i.'' .'<br>';
-                echo $reponse_fetch_array2[$i][0] .' - '. ' fin de reservation No : '.$i.'' .'<br>';
-            $i++;
+            var_dump($reponse_fetch_array2);
 
+            
+
+            $i = 0;
+            
+            $debutDateString = ($date .' '. $debut . ':00:00');
+            $finDateString = ($date .' '. $fin . ':00:00');
+
+            foreach($reponse_fetch_array2 as $reservation) {
+                if (isOverlapping($reservation, $debutDateString, $finDateString)) {
+                    $isInvalidReservationTime = true;
+                    break;
+                }
             }
-            
-            //var_dump($reponse_fetch_array2) ;
-            echo  '<br>' . $reponse_fetch_array2[0][0] .' - '. ' début de 1ére reservation' . '<br>';
-            echo $reponse_fetch_array2[0][1] .' - '. ' fin de 2éme reservation'. '<br>';
-            echo $reponse_fetch_array2[1][0] .' - '. ' début de 1ére reservation'. '<br>';
-            echo $reponse_fetch_array2[0][1] .' - '. ' fin de 2éme reservation'. '<br>'. '<br>';
-            
-            // $count = count($reponse_fetch_array2);
-            // var_dump($count);
-            
-            //echo$count.' '. " - c'est le nombre de lignes dans db ".'<br>';
-            //echo $reponse_fetch_array2[0][0].' '. 'date récupéré de db '.'<br>';
+
             
             //définition du format de la date et heure pour comparer dans la requete suivante
-            $dateheure = ($date .' '. $debut );
+            $dateheure = ($date .' '. $debut);
             //var_dump($dateheure);
             //echo $dateheure. ' '. 'date de POST' .'<br>'.'<br>'.'<br>';
             
@@ -90,10 +109,19 @@
                     if($debut < $fin && $debut != $fin){
                         //condition pour verifier que la date de réservation n'est pas antérieure à la date actuelle
                         if ($date_heure_debut /*POST*/ >= $date_heure_actuelle /*actuelle*/) {
+
+                            if ($isInvalidReservationTime) {
+                                //Show error message
+                                echo "Créneau non disponible, consultez le planning pour voir les disponibilités";
+                                //header('Location: reservation-form.php?erreur=1');
+                            } else {
+                                //Save to DB
                                 echo 'réservation à bien été effectué';
                                 $requete4 = ("INSERT INTO reservations (`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$titre', '$description', '$date $debut', '$date $fin', '$user_id') ");
                                 $exec_requete4 = $connect -> query($requete4);
                                 //header('Location: reservation-form.php?erreur=2');
+                            }
+
                         } else {
                             echo "Erreur : la date et(ou) heure choisie est une date antérieure à la date actuelle". '<br>'. '<br>';
                         }
@@ -143,32 +171,25 @@
             <label for="debut">Heure de début</label>
             <select name="debut" required>
                 <option >choix</option>
-                <option value="08">08h00</option>
-                <option value="09">09h00</option>
-                <option value="10">10h00</option>
-                <option value="11">11h00</option>
-                <option value="12">12h00</option>
-                <option value="13">13h00</option>
-                <option value="14">14h00</option>
-                <option value="15">15h00</option>
-                <option value="16">16h00</option>
-                <option value="17">17h00</option>
-                <option value="18">18h00</option>
+                <?php 
+                for($i=8; $i<=18; $i++) {
+                    //operation ternaire pour ajouterun zéro avant l'heure si < 10h
+                    $current_hour = $i >= 10 ? $i : '0'.$i ;
+                    $is_selected = $current_hour == $_GET['heure'] ? 'selected' : '';
+
+                    echo '<option '.$is_selected.' value="'.$current_hour.'">'.$current_hour.'h00</option>';
+                } ?>
             </select>
             <label for="fin">Heure de fin</label>
             <select name="fin" required>
                 <option>choix</option>
-                <option value="09">09h00</option>
-                <option value="10">10h00</option>
-                <option value="11">11h00</option>
-                <option value="12">12h00</option>
-                <option value="13">13h00</option>
-                <option value="14">14h00</option>
-                <option value="15">15h00</option>
-                <option value="16">16h00</option>
-                <option value="17">17h00</option>
-                <option value="18">18h00</option>
-                <option value="19">19h00</option>
+                <?php 
+                for($i=9; $i<=19; $i++) {
+                    $current_hour = $i >= 10 ? $i : '0'.$i ;
+                    $is_selected = $current_hour == ($_GET['heure'] + 1) ? 'selected' : '';
+
+                    echo '<option '.$is_selected.' value="'.$current_hour.'">'.$current_hour.'h00</option>';
+                } ?>
             </select>
             <label for="date">Date</label>
             <input name="date" type="date"  min=<?php $date_min ?> max="2023-12-31" required>
