@@ -29,7 +29,7 @@
             <a href="index_con.php">Accueil</a>
             <a href="planning.php">Planning</a>
             <a href="reservation-form.php">Réservez ici</a>
-            <a href="reservation.php">Vos réservations</a>
+            
             <a href="profil.php">Profil</a>
             <a href="deconnexion.php"class="no_active" >Déconnexion</a>
         <?php } ?>

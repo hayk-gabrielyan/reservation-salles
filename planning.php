@@ -1,7 +1,7 @@
 <?php
     session_start();
     include('includes/connect_db.php'); // connexion à la base de donnée
-    
+    include 'planning-form.php';
     $login = $_SESSION['login'];
 ?>
 
@@ -15,7 +15,7 @@
         <h1>Planning</h1>
         
 
-        <table border="1">
+        <!-- <table border="1">
             <thead >
                 <?php 
                 $semaine = array('lundi','mardi', 'mercredi', 'jeudi','vendredi', 'samedi', 'dimanche') ;
@@ -50,7 +50,38 @@
                 
                 ?>
             </tbody>
-        </table>
+        </table> -->
+<form method="get" id ="calendar">
+
+    <button type="submit" name="previous_week" id="previous_week"> <i class="fa fa-arrow-left icon"></i> </i> </button>  
+     
+    <button type="submit" name="reset" >Semaine en cours</button>
+
+    <button type="submit" name="next_week" id="next_week"> <i class="fa fa-arrow-right icon"></i></button>  
+
+</form>
+<table>
+
+<thead>
+
+    <tr>
+
+        <th>Créneaux</th>
+
+        <?php jours_planning() ?>
+
+    </tr>
+
+</thead>
+
+<tbody>
+
+    <?php corps_planning($result_events) ?>  
+
+</tbody>
+
+</table>
+
 
     </main>
 </body>
