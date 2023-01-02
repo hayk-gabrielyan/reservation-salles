@@ -9,7 +9,7 @@
 <body>
     <?php include ('includes/nav.php')?>
     <main>
-        <form action="login_check.php" method="POST">  
+        <form action="login_check.php" method="POST" id="connexion_form">  
             <h2>Connexion</h2>
             <div class="input-container">
                 <i class="fa fa-user icon"></i>

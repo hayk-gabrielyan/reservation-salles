@@ -1,0 +1,238 @@
+/********************************* Général *********************************/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+main{
+    background-color: rgb(229, 227, 227);
+    min-height: 78vh;
+}
+
+a{
+    text-decoration: none;
+}
+/********************************* nav.php *********************************/
+header{
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(0, 0, 0) ;
+  box-shadow: 0px 0px 15px rgb(0, 0, 0);
+  color: beige;
+  }
+
+#logo{
+  width: 70px;
+  height: 70px;
+  margin-left: 50%;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+header a{
+  color: beige;
+
+}
+
+
+#logo_text{
+  margin-top: 5%;
+  margin-left: 15%;
+  font-size: 2em;
+  font-family: 'tech logo';
+  color: rgb(255, 255, 255);
+  width: auto;
+}
+
+#box1{
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+}
+
+#box2{
+  align-self: center;
+  padding-top: 10px;
+  padding-right: 50px;
+
+}
+
+#box2 a {
+  color: black;
+  font-family: 'roboto_regular';
+  font-weight: bold;
+  padding: 5px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 3px;
+  background-color: rgb(250 250 250);
+  margin-right: 10px;
+ }
+    
+#box2 a:hover {
+  background-color: #f5ff9c00;
+  color: rgb(255, 255, 255);
+  border: solid 1px white;
+}
+
+
+
+
+
+/********************************* footer.php *********************************/
+  
+  
+  footer{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #141414;
+    box-shadow:-2px 0px 30px #000000;
+  }
+  
+  #block-black-up{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #000000;
+  }
+  
+  #block-black-down{
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  #block-black-down li{
+    cursor: pointer;
+  }
+  
+  #logo-block{
+    display: flex;
+    font-family: 'tech logo';
+    font-size: 50px;
+    margin-top: 15px;
+  }
+  
+  footer img{
+    width: 60px;
+  }
+  
+  footer ul{
+    display: flex;
+    list-style: none;
+  }
+  
+  footer li{
+    margin: 7px;
+  }
+  
+  #social-block h3{
+    font-size: 30px;
+  }
+  
+  #social-block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #social-block img{
+    width: 30px;
+    height: 30px;
+    color: white;
+    margin: 5px;
+    cursor: pointer;
+  }
+  
+  #social-block img:hover{
+    background-color:#F87000 ;
+    border-radius: 5px;
+  }
+  
+  
+  #white-block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    color: #000000;
+    width: 100%;
+    height: 30px;
+  }
+  
+  #white-block li{
+    cursor: pointer;
+  }
+  
+  footer a:-webkit-any-link {
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+
+/********************************* index.php *********************************/
+#block1{
+  width: 100% ;
+  height: auto ;
+}
+
+.img_salle{
+  background-image: url("../img/salle.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.right_block{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  border-radius: 15px;
+}
+
+.button {
+  position: relative;
+  border: none;
+  font-size: 15px;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 15px;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: #000000;
+  color: white;
+}
+
+.background-color{
+  background-color: #dfdedee2;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+/********************************* connexion.php *********************************/
+
+
+
+/********************************* separator *********************************/
+

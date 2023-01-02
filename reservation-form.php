@@ -32,10 +32,13 @@
         if (isset($_POST['titre']) && ($_POST['debut'] !== 'choix') && ($_POST['fin'] !== 'choix') ){
             //déclaration de variables de POST
             $titre = $_POST['titre'];
+            $titre= mysqli_real_escape_string($connect, $titre); //permet l'utilisation des apostrophes
             $debut = $_POST['debut'];
             $fin = $_POST['fin'];
             $date = $_POST['date'];
             $description = $_POST['description'];
+            $description= mysqli_real_escape_string($connect, $description); //permet l'utilisation des apostrophes
+
             $dt = new DateTime('now',new DateTimeZone('Europe/Paris'));
             //récuperation de id_utilisateur de la db
             $requete = ("SELECT id FROM utilisateurs WHERE `login` = '$login' ");
@@ -93,9 +96,12 @@
             
             echo "voici date et heure de debut de POST : ". date( "d/m/Y", strtotime($date)).' '. date( "s:H:i", $debut) . '<br>'. '<br>';
             echo "voici l'heure de fin de POST : ". date( "s", $fin ) . '<br>'. '<br>';
-            $date_heure_debut = date( "d/m/Y", strtotime($date)).' '. date( "s:H:i", $debut);
-            $date_heure_actuelle = $dt->format('d/m/Y H:i:s');
-            
+            $date_heure_debut = date( "Y/m/d", strtotime($date)).' '. date( "s:H:i", $debut);
+            $date_heure_actuelle = $dt->format('Y/m/d H:i:s');
+
+            echo '$date_heure_debut'.' '. $date_heure_debut .'<br>';
+            echo '$date_heure_actuelle'.' '. $date_heure_actuelle .'<br>';
+
             //les conditions d'insertion dans la db
             if($count1==0 ) {
 
@@ -114,15 +120,15 @@
                                 //Show error message
                                 header('Location: reservation-form.php?message=6');
                             } else {
-                                //Save to DB
-                               
+                                                               
                                 $requete4 = ("INSERT INTO reservations (`titre`, `description`, `debut`, `fin`, `id_utilisateur`) VALUES ('$titre', '$description', '$date $debut', '$date $fin', '$user_id') ");
                                 $exec_requete4 = $connect -> query($requete4);
                                 header('Location: reservation-form.php?message=5');
                             }
 
                         } else {
-                            header('Location: reservation-form.php?message=4');
+                            echo 'message 4';
+                            //header('Location: reservation-form.php?message=4');
                         }
                         
                     }

@@ -4,7 +4,7 @@
 
     <div id="block-black-up">
         <div id="logo-block" >
-            <img src="img/logo_white_letters.png">
+            <img src="img/logo.png">
         </div>
         <div id="social-block">
             <h3>Suivez nous</h3>
