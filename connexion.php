@@ -8,8 +8,8 @@
 
 <body>
     <?php include ('includes/nav.php')?>
-    <main>
-        <form action="login_check.php" method="POST" id="connexion_form">  
+    <main id="main-con">
+        <form action="login_check.php" method="POST" id="connexion_form" class="background-color">  
             <h2>Connexion</h2>
             <div class="input-container">
                 <i class="fa fa-user icon"></i>
@@ -19,8 +19,9 @@
                 <i class="fa fa-key icon"></i>
                 <input class="input-field" type="password" placeholder="Mot de passe" name="password" >
             </div>
-            <button type="submit" name="submit" class="button">Se connecter</button>
+            <button type="submit" name="submit" class="button se_connecter">Se connecter</button>
         </form>
     </main>
+    <?php include ('includes/footer.php')?>
 </body>
 </html>

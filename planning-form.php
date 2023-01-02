@@ -45,7 +45,7 @@ if(isset($_GET['next_week'])) {
         $_SESSION['date'] = "this week  $_SESSION[week] weeks";
     }
 
-    header('Location: planning.php');
+    // header('Location: planning.php');
 }
 
 if(isset($_GET['previous_week'])){
@@ -72,13 +72,13 @@ if(isset($_GET['previous_week'])){
         $_SESSION['date'] = "this week  $_SESSION[week] weeks";
     }
 
-    header('Location: planning.php');
+    // header('Location: planning.php');
 }
 
 if(isset($_GET['reset'])){
     $_SESSION['week'] = 0;
     $_SESSION['date'] = 'this week';
-    header('Location: planning.php');
+    // header('Location: planning.php');
 }
 
 // Ci-dessous la boucle qui m'affiche les titres du tableau, à savoir les jours de la semaine.

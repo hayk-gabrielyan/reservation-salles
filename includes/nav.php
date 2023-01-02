@@ -1,7 +1,17 @@
 <!--header-->
 <header>
+    
+    <?php if (isset($_GET['deconnexion'])){
+        if($_GET['deconnexion']==true){
+            session_unset();
+            session_destroy();
+            header('Location: index.php');
+            
+        } 
+    } ?>
+
     <!-- Si aucune Session n'est ouverte -->
-    <?php if(!$login) { ?>
+    <?php if(!isset($_SESSION['login'])) { ?>
       
         <div id="box1">
             <a  href=index.php><img src="img/logo.png" alt="logo" id="logo"></a>
@@ -17,13 +27,13 @@
     <!-- Si une Session user est ouverte -->
         <?php } else { ?>
             <div id="box1">
-                <div>
-                    <a  href=index_con.php><img src="img/logo.png" alt="logo" id="logo"></a>
-                    <a  href=index_con.php>La salle de Réunion</a>
-                </div>
+                <a  href=index.php><img src="img/logo.png" alt="logo" id="logo"></a>
+                <a  href=index.php id="logo_text">La salle de Réunion</a>
             </div>
-            <div>Vous êtes connecté en tant que <?php echo $login ?> </div>
+
+            <div id="connected">Vous êtes connecté en tant que <?php echo $login ?> </div>
             <div id="box2">
+                
                 <a href="index_con.php">Accueil</a>
                 <a href="planning.php">Planning</a>
                 <a href="reservation-form.php">Réservez ici</a>
@@ -32,6 +42,7 @@
                 <a href="deconnexion.php"class="no_active" >Déconnexion</a>
             </div>
         <?php } ?>
+        
     </div>
 </header>
 <!--header end-->

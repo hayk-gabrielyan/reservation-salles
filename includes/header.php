@@ -1,5 +1,7 @@
 <!-- si il y a une session ouverte on déclare la valeur de login dans la variable $login -->
+
 <?php 
+        
     $login = false;
     if (isset($_SESSION['login'])) {
         $login = $_SESSION['login'];
