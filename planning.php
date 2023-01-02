@@ -12,22 +12,22 @@
     
 <body>
 <?php include ('includes/nav.php')?>
-    <main>
+    <main id="main_plan">
             <h1>Planning</h1>
             <!-- <table border="1">
                 <thead >
                     <?php 
-                    $semaine = array('lundi','mardi', 'mercredi', 'jeudi','vendredi', 'samedi', 'dimanche') ;
-                    $i = 0;
-                    $j = 8;
-                    $k = 9;
-                    echo "<tr>";
-                    echo "<th> Créneaux </th>";
-                    while ($i < 7) {
-                        echo "<th>$semaine[$i]</th>";
-                        $i++;
-                    } 
-                    echo "</tr>";
+                        $semaine = array('lundi','mardi', 'mercredi', 'jeudi','vendredi', 'samedi', 'dimanche') ;
+                        $i = 0;
+                        $j = 8;
+                        $k = 9;
+                        echo "<tr>";
+                        echo "<th> Créneaux </th>";
+                        while ($i < 7) {
+                            echo "<th>$semaine[$i]</th>";
+                            $i++;
+                        } 
+                        echo "</tr>";
                     ?>
                 </thead>
                 <tbody>
@@ -50,7 +50,7 @@
             </table> -->
         <form method="get" id ="calendar">
             <button type="submit" name="previous_week" id="previous_week"> <i class="fa fa-arrow-left icon"></i> </button>  
-            <button type="submit" name="reset" >Semaine en cours</button>
+            <button type="submit" name="reset" class="button" >Semaine en cours</button>
             <button type="submit" name="next_week" id="next_week"> <i class="fa fa-arrow-right icon"></i></button>  
         </form>
         <table>
@@ -66,5 +66,6 @@
         </tbody>
         </table>
     </main>
+    <?php include 'includes/footer.php'; ?>
 </body>
 </html>

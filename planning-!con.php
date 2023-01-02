@@ -57,7 +57,7 @@
 </table> -->
 <form method="get" id ="calendar">
     <button type="submit" name="previous_week" id="previous_week"> <i class="fa fa-arrow-left icon"></i> </i> </button> 
-    <button type="submit" name="reset" >Semaine en cours</button> 
+    <button type="submit" name="reset" class="button" >Semaine en cours</button> 
     <button type="submit" name="next_week" id="next_week"> <i class="fa fa-arrow-right icon"></i></button>  
 </form>
 
