@@ -13,7 +13,7 @@
                 <h1 class="background-color">Au service de votre événement</h1>
             
                 <div>
-                <div class="right_block  background-color">
+                <div class="right_block , background-color">
                     <div>Connectez-vous à votre compte</div>
                     <a href="connexion.php"><button class="button green">Se connecter</button></a>
                     <div>Pas encore inscrit?</div>

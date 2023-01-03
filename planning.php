@@ -13,10 +13,11 @@
 <body>
 <?php include ('includes/nav.php')?>
     <main id="main_plan">
-            <h1>Planning</h1>
+        <div id="planning_container">
+            <h1 class="planning" >Planning</h1>
             <!-- <table border="1">
                 <thead >
-                    <?php 
+                <?php 
                         $semaine = array('lundi','mardi', 'mercredi', 'jeudi','vendredi', 'samedi', 'dimanche') ;
                         $i = 0;
                         $j = 8;
@@ -48,11 +49,15 @@
                     } ?>
                 </tbody>
             </table> -->
+        
+            
+
         <form method="get" id ="calendar">
             <button type="submit" name="previous_week" id="previous_week"> <i class="fa fa-arrow-left icon"></i> </button>  
             <button type="submit" name="reset" class="button" >Semaine en cours</button>
             <button type="submit" name="next_week" id="next_week"> <i class="fa fa-arrow-right icon"></i></button>  
         </form>
+        </div>
         <table>
 
         <thead>

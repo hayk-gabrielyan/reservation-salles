@@ -6,7 +6,6 @@
             session_unset();
             session_destroy();
             header('Location: index.php');
-            
         } 
     } ?>
 
@@ -40,6 +39,7 @@
                 
                 <a href="profil.php">Profil</a>
                 <a href="deconnexion.php"class="no_active" >Déconnexion</a>
+                
             </div>
         <?php } ?>
         

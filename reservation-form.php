@@ -127,8 +127,7 @@
                             }
 
                         } else {
-                            echo 'message 4';
-                            //header('Location: reservation-form.php?message=4');
+                            header('Location: reservation-form.php?message=4');
                         }
                         
                     }
@@ -142,7 +141,7 @@
             }
                       
             
-        } else {
+        } else {    
             header('Location: reservation-form.php?message=1');
         }
     }
@@ -157,68 +156,70 @@
 
 <body>
 <?php include ('includes/nav.php')?>
-    <main>
-        <h1>Formulaire de réservation</h1>
-        
-        <?php
-        //affichage des messages 
-            if(isset($_GET['message'])) {
-                    $message = $_GET['message'];
-                    if($message == 1){
-                        echo "<center><p style='color:red'>Erreur : Choisissez l'heure svp</p></center>";
-                    }
-                    if($message == 2){
-                        echo "<center><p style='color:red'>Erreur : Créneau déjà pris</p></center>";
-                    }                      
-                    if($message == 3){
-                        echo "<center><p style='color:red'>Erreur : heure de fin est antérieur ou égal à l'heure de debut</p></center>";
-                    }                      
-                    if($message == 4){
-                        echo "<center><p style='color:red'>Erreur : la date et(ou) heure choisie est antérieure à la date date et(ou) heure actuelle </center>";
-                    }                      
-                    if($message == 5){
-                        echo "<center><p style='color:green'>Merci, votre réservation à bien été effectué.</center>";
-                    }                      
-                    if($message == 6){
-                        echo "<center><p style='color:red'>Créneau non disponible, consultez le planning pour voir les disponibilités</center>";
-                    }                      
-                    if($message == 7){
-                        echo "<center><p style='color:red'>Nous sommes fermés les week-ends</center>";
-                    }                      
-                } 
-        ?>
-        <form action="reservation-form.php" method="POST">
-            <label for="titre">Titre de réservation</label>
-            <input name="titre" type="text" placeholder="titre de l'evenement" required>
-            <label for="debut">Heure de début</label>
-            <select name="debut" required>
-                <option >choix</option>
-                <?php 
-                for($i=8; $i<=18; $i++) {
-                    //operation ternaire pour ajouterun zéro avant l'heure si < 10h
-                    $current_hour = $i >= 10 ? $i : '0'.$i ;
-                    $is_selected = $current_hour == $_GET['heure'] ? 'selected' : '';
+    <main id="main_reserv">
+        <div id="background-reserv">
+            <h1>Formulaire de réservation</h1>
+            
+            <?php
+            //affichage des messages 
+                if(isset($_GET['message'])) {
+                        $message = $_GET['message'];
+                        if($message == 1){
+                            echo "<center><p style='color:red'>Erreur : Choisissez l'heure svp</p></center>";
+                        }
+                        if($message == 2){
+                            echo "<center><p style='color:red'>Erreur : Créneau déjà pris</p></center>";
+                        }                      
+                        if($message == 3){
+                            echo "<center><p style='color:red'>Erreur : heure de fin est antérieur ou égal à l'heure de debut</p></center>";
+                        }                      
+                        if($message == 4){
+                            echo "<center><p style='color:red'>Erreur : la date et(ou) heure choisie est antérieure à la date date et(ou) heure actuelle </center>";
+                        }                      
+                        if($message == 5){
+                            echo "<center><p style='color:green'>Merci, votre réservation à bien été effectué.</center>";
+                        }                      
+                        if($message == 6){
+                            echo "<center><p style='color:red'>Créneau non disponible, consultez le planning pour voir les disponibilités</center>";
+                        }                      
+                        if($message == 7){
+                            echo "<center><p style='color:red'>Nous sommes fermés les week-ends</center>";
+                        }                      
+                    } 
+            ?>
+            <form action="reservation-form.php" method="POST" id="form_reserv">
+                <label for="titre">Titre de réservation</label>
+                <input name="titre" type="text" placeholder="Titre de l'evenement ..." required class="large">
+                <label for="debut">Heure de début</label>
+                <select name="debut" required>
+                    <option >choix</option>
+                    <?php 
+                    for($i=8; $i<=18; $i++) {
+                        //operation ternaire pour ajouterun zéro avant l'heure si < 10h
+                        $current_hour = $i >= 10 ? $i : '0'.$i ;
+                        $is_selected = $current_hour == $_GET['heure'] ? 'selected' : '';
 
-                    echo '<option '.$is_selected.' value="'.$current_hour.'">'.$current_hour.'h00</option>';
-                } ?>
-            </select>
-            <label for="fin">Heure de fin</label>
-            <select name="fin" required>
-                <option>choix</option>
-                <?php 
-                for($i=9; $i<=19; $i++) {
-                    $current_hour = $i >= 10 ? $i : '0'.$i ;
-                    $is_selected = $current_hour == ($_GET['heure'] + 1) ? 'selected' : '';
+                        echo '<option '.$is_selected.' value="'.$current_hour.'">'.$current_hour.'h00</option>';
+                    } ?>
+                </select>
+                <label for="fin">Heure de fin</label>
+                <select name="fin" required>
+                    <option>choix</option>
+                    <?php 
+                    for($i=9; $i<=19; $i++) {
+                        $current_hour = $i >= 10 ? $i : '0'.$i ;
+                        $is_selected = $current_hour == ($_GET['heure'] + 1) ? 'selected' : '';
 
-                    echo '<option '.$is_selected.' value="'.$current_hour.'">'.$current_hour.'h00</option>';
-                } ?>
-            </select>
-            <label for="date">Date</label>
-            <input name="date" type="date"  min=<?php $date_min ?> max="2023-12-31" required>
-            <label for="description" >Description :</label>
-            <input name="description" type="text" required>
-            <button name="submit" type="submit">Réserver</button>
-        </form>
-        
+                        echo '<option '.$is_selected.' value="'.$current_hour.'">'.$current_hour.'h00</option>';
+                    } ?>
+                </select>
+                <label for="date">Date</label>
+                <input name="date" type="date"  min=<?php $date_min ?> max="2023-12-31" required>
+                <label for="description" >Description :</label>
+                <input name="description" type="text" class="large" placeholder="une description pour votre réservation ..." required>
+                <button name="submit" type="submit" class="button align_self red">Réserver</button>
+            </form>
+        </div>
     </main>
+    <?php include 'includes/footer.php';?>
 </body>

@@ -10,6 +10,7 @@ INNER JOIN utilisateurs ON reservations.id_utilisateur = utilisateurs.id";
 
 $query_events = $connect->query($request_events); //execution de la requete precedante
 $result_events = $query_events->fetch_all();
+$occupe = "occupé";
 
 
 
